@@ -1,0 +1,3 @@
+<div>
+    Collect pipeline build, stage, testing and coverage data and report them to remote servers such as Logstash, Elasticsearch, InfluxDB and etc.
+</div>

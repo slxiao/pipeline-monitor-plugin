@@ -1,0 +1,10 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <f:section title="${%Pipeine Monitor}">
+    <f:optionalBlock name="enabled" title="Enable report pipeline monitor data to remote server" inline="true" field="enabled">
+	    <f:entry>
+	    	<f:dropdownDescriptorSelector title="${%Remote Type}" field="remoteServer" descriptors="${descriptor.remoteTypes}"/>
+	    </f:entry>
+    </f:optionalBlock>
+  </f:section>
+</j:jelly>
