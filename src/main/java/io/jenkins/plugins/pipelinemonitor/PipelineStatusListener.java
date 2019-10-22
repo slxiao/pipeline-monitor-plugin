@@ -1,5 +1,7 @@
 package io.jenkins.plugins.pipelinemonitor;
 
+import javax.annotation.Nonnull;
+
 import hudson.Extension;
 import hudson.model.Run;
 import hudson.model.TaskListener;
@@ -12,13 +14,19 @@ import hudson.model.listeners.RunListener;
  * @author Jeff Pearce (GitHub jeffpearce)
  */
 @Extension
-public class PipelineMonitorListener extends RunListener<Run<?, ?>> {
+public class PipelineStatusListener extends RunListener<Run<?, ?>> {
 
     @Override
     public void onStarted(Run<?, ?> run, TaskListener listener) {
         super.onStarted(run, listener);
 
-        listener.getLogger().println("Hello, pipeline listener!");
+        listener.getLogger().println("Pipeline started!");
+    }
+
+     @Override
+    public void onCompleted(Run<?, ?> build, @Nonnull TaskListener listener) {
+
+        listener.getLogger().println("Pipeline completed!");
     }
 
 }
