@@ -1,7 +1,5 @@
 package io.jenkins.plugins.pipelinemonitor;
 
-import javax.annotation.Nonnull;
-
 import hudson.Extension;
 import hudson.model.Run;
 import hudson.model.TaskListener;
@@ -21,19 +19,35 @@ public class PipelineStatusListener extends RunListener<Run<?, ?>> {
 
     @Override
     public void onStarted(Run<?, ?> run, TaskListener listener) {
-        super.onStarted(run, listener);
+        final String buildResult = run.getResult() == null ?
+                    "ONGOING": run.getResult().toString();
 
         BuildStatus build = new BuildStatus();
         build.setJenkinsUrl(Jenkins.getInstance().getRootUrl());
+        build.setJobName(run.getParent().getName());
+        build.setNumber(run.getNumber());
+        build.setStartTime(run.getTimestamp().getTime());
+        build.setResult(buildResult);
         
         RestClientUtil.postToService("http://10.183.42.147:8080", build);
         listener.getLogger().println("Pipeline started!");
     }
 
      @Override
-    public void onCompleted(Run<?, ?> build, @Nonnull TaskListener listener) {
+    public void onFinalized(final Run<?, ?> run) {
 
-        listener.getLogger().println("Pipeline completed!");
+        final String buildResult = run.getResult() == null ?
+                    "ONGOING": run.getResult().toString();
+
+        BuildStatus build = new BuildStatus();
+        build.setJenkinsUrl(Jenkins.getInstance().getRootUrl());
+        build.setJobName(run.getParent().getName());
+        build.setNumber(run.getNumber());
+        build.setResult(buildResult);
+        build.setDuration(run.getDuration());
+
+        RestClientUtil.postToService("http://10.183.42.147:8080", build);
+
     }
 
 }
