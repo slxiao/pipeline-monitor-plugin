@@ -8,6 +8,7 @@ A Jenkins plugin to collect pipeline build, stage and test result and send these
 - [ ] Collect JUnit test result
 - [ ] Collect Cobertura test coverage result
 - [ ] Collect diff coverage result
+- [ ] Unit testing
 
 # Lisense
 MIT
