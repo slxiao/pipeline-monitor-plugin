@@ -15,7 +15,7 @@ import jenkins.model.Jenkins;
  * @author Jeff Pearce (GitHub jeffpearce)
  */
 @Extension
-public class PipelineStatusListener extends RunListener<Run<?, ?>> {
+public class BuildStatusListener extends RunListener<Run<?, ?>> {
 
     @Override
     public void onFinalized(final Run<?, ?> run) {
