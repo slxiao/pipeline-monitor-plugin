@@ -3,7 +3,9 @@ package io.jenkins.plugins.pipelinemonitor;
 import hudson.Extension;
 import hudson.model.Run;
 import hudson.model.listeners.RunListener;
+import hudson.tasks.junit.TestResultAction;
 import io.jenkins.plugins.pipelinemonitor.model.BuildStatus;
+import io.jenkins.plugins.pipelinemonitor.model.TestResults;
 import io.jenkins.plugins.pipelinemonitor.util.RestClientUtil;
 import jenkins.model.Jenkins;
 
@@ -31,6 +33,10 @@ public class BuildStatusListener extends RunListener<Run<?, ?>> {
 
         RestClientUtil.postToService("http://10.183.42.147:8080", build);
 
+        TestResultAction testResultAction = run.getAction(TestResultAction.class);
+        TestResults testResults = TestResults.fromJUnitTestResults(testResultAction);
+        RestClientUtil.postToService("http://10.183.42.147:8080", testResults);
+        
     }
 
 }

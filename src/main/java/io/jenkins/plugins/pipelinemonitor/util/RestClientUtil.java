@@ -24,6 +24,7 @@ public class RestClientUtil {
     public static void postToService(final String url, Object object) {
         try {
             String jsonToPost = JSONUtil.convertToJson(object);
+            LOGGER.log(Level.WARNING, jsonToPost);
             Unirest.post(url)
                     .header(ACCEPT, APPLICATION_JSON)
                     .header(CONTENT_TYPE, APPLICATION_JSON)
