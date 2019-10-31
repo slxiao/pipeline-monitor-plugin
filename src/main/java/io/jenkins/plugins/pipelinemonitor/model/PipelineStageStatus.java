@@ -6,7 +6,7 @@ import java.util.Date;
  * Data class holding Jenkins pipeline stage status
  * Created by Shelwin
  */
-public class StageStatus {
+public class PipelineStageStatus {
 
     private String jenkinsUrl;
 
@@ -22,7 +22,7 @@ public class StageStatus {
 
     private long duration;
 
-    public StageStatus(String jenkinsUrl,
+    public PipelineStageStatus(String jenkinsUrl,
                        String jobName,
                        int number,
                        String name,
@@ -38,7 +38,7 @@ public class StageStatus {
         this.duration = duration;
     }
 
-    public StageStatus() {
+    public PipelineStageStatus() {
         this.jenkinsUrl = "";
         this.jobName = "";
         this.number = 0;

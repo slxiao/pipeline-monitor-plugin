@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import hudson.model.Queue;
+import hudson.model.Run;
+
 import org.jenkinsci.plugins.pipeline.StageStatus;
 import org.jenkinsci.plugins.workflow.actions.ErrorAction;
 import org.jenkinsci.plugins.workflow.actions.LabelAction;
@@ -17,6 +20,14 @@ import org.jenkinsci.plugins.workflow.cps.nodes.StepEndNode;
 import org.jenkinsci.plugins.workflow.cps.nodes.StepStartNode;
 import org.jenkinsci.plugins.workflow.flow.GraphListener;
 import org.jenkinsci.plugins.workflow.graph.FlowNode;
+import org.jenkinsci.plugins.workflow.flow.FlowExecution;
+
+import io.jenkins.plugins.pipelinemonitor.model.PipelineStageStatus;
+import io.jenkins.plugins.pipelinemonitor.util.RestClientUtil;
+
+import jenkins.model.Jenkins;
+
+import javax.annotation.CheckForNull;
 
 import hudson.Extension;
 
@@ -49,7 +60,6 @@ public class StageStatusListener implements GraphListener {
                 }
 
                 ErrorAction errorAction = fn.getError();
-                String nodeName = null;
 
                 if (errorAction == null) {
                     return;
@@ -97,8 +107,17 @@ public class StageStatusListener implements GraphListener {
 
                 if (nodeName != null) {
                     String buildState = buildStateForStage(startNode, errorAction);
-                    log(Level.WARNING, "nodeName: " + nodeName + " buildState: " + buildState + " time: " + time);
+                    PipelineStageStatus stage = new PipelineStageStatus();
+                    stage.setName(nodeName);
+                    stage.setDuration(time);
+                    stage.setResult(buildState);
 
+                    Run<?, ?> run = runFor(fn.getExecution());
+                    stage.setJenkinsUrl(Jenkins.getInstance().getRootUrl());
+                    stage.setJobName(run.getParent().getName());
+                    stage.setNumber(run.getNumber());
+
+                    RestClientUtil.postToService("http://10.183.42.147:8080", stage);
                 }
             }
         } catch (IOException ex) {
@@ -172,6 +191,28 @@ public class StageStatusListener implements GraphListener {
     private static boolean isDeclarativePipelineJob(FlowNode fn) {
        log(Level.WARNING, "isDeclarativePipelineJob: false");
         return false;
+    }
+
+    /**
+     * Gets the jenkins run object of the specified executing workflow.
+     *
+     * @param exec execution of a workflow
+     * @return jenkins run object of a job
+     */
+    private static @CheckForNull
+    Run<?, ?> runFor(FlowExecution exec) {
+        Queue.Executable executable;
+        try {
+            executable = exec.getOwner().getExecutable();
+        } catch (IOException x) {
+            getLogger().log(Level.WARNING, null, x);
+            return null;
+        }
+        if (executable instanceof Run) {
+            return (Run<?, ?>) executable;
+        } else {
+            return null;
+        }
     }
 
     /**

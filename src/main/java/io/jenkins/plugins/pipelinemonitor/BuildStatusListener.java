@@ -2,7 +2,6 @@ package io.jenkins.plugins.pipelinemonitor;
 
 import hudson.Extension;
 import hudson.model.Run;
-import hudson.model.TaskListener;
 import hudson.model.listeners.RunListener;
 import io.jenkins.plugins.pipelinemonitor.model.BuildStatus;
 import io.jenkins.plugins.pipelinemonitor.util.RestClientUtil;
