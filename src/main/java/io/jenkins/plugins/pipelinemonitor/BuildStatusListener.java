@@ -3,11 +3,11 @@ package io.jenkins.plugins.pipelinemonitor;
 import hudson.Extension;
 import hudson.model.Run;
 import hudson.model.listeners.RunListener;
-import hudson.tasks.junit.TestResultAction;
 import hudson.plugins.cobertura.CoberturaBuildAction;
+import hudson.tasks.junit.TestResultAction;
 import io.jenkins.plugins.pipelinemonitor.model.BuildStatus;
-import io.jenkins.plugins.pipelinemonitor.model.TestResults;
 import io.jenkins.plugins.pipelinemonitor.model.CodeCoverage;
+import io.jenkins.plugins.pipelinemonitor.model.TestResults;
 import io.jenkins.plugins.pipelinemonitor.util.RestClientUtil;
 import jenkins.model.Jenkins;
 
@@ -20,29 +20,33 @@ import jenkins.model.Jenkins;
 @Extension
 public class BuildStatusListener extends RunListener<Run<?, ?>> {
 
-    @Override
-    public void onFinalized(final Run<?, ?> run) {
+  /**
+  * Collect build data and send for notification.
+  *
+  * @param run the run build
+  */
+  @Override
+  public void onFinalized(final Run<?, ?> run) {
 
-        final String buildResult = run.getResult() == null ?
-                    "ONGOING": run.getResult().toString();
+    final String buildResult = run.getResult() == null
+              ? "ONGOING" : run.getResult().toString();
 
-        BuildStatus build = new BuildStatus();
-        build.setJenkinsUrl(Jenkins.getInstance().getRootUrl());
-        build.setJobName(run.getParent().getName());
-        build.setNumber(run.getNumber());
-        build.setResult(buildResult);
-        build.setDuration(run.getDuration());
+    BuildStatus build = new BuildStatus();
+    build.setJenkinsUrl(Jenkins.getInstance().getRootUrl());
+    build.setJobName(run.getParent().getName());
+    build.setNumber(run.getNumber());
+    build.setResult(buildResult);
+    build.setDuration(run.getDuration());
 
-        RestClientUtil.postToService("http://10.183.42.147:8080", build);
+    RestClientUtil.postToService("http://10.183.42.147:8080", build);
 
-        TestResultAction testResultAction = run.getAction(TestResultAction.class);
-        TestResults testResults = TestResults.fromJUnitTestResults(testResultAction);
-        RestClientUtil.postToService("http://10.183.42.147:8080", testResults);
+    TestResultAction testResultAction = run.getAction(TestResultAction.class);
+    TestResults testResults = TestResults.fromJUnitTestResults(testResultAction);
+    RestClientUtil.postToService("http://10.183.42.147:8080", testResults);
 
-        CoberturaBuildAction coberturaAction = run.getAction(CoberturaBuildAction.class);
-        CodeCoverage codeCoverage = CodeCoverage.fromCobertura(coberturaAction);
-        RestClientUtil.postToService("http://10.183.42.147:8080", codeCoverage);
-        
-    }
+    CoberturaBuildAction coberturaAction = run.getAction(CoberturaBuildAction.class);
+    CodeCoverage codeCoverage = CodeCoverage.fromCobertura(coberturaAction);
+    RestClientUtil.postToService("http://10.183.42.147:8080", codeCoverage);
+  }
 
 }
