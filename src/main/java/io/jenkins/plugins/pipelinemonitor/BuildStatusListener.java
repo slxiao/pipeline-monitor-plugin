@@ -4,8 +4,10 @@ import hudson.Extension;
 import hudson.model.Run;
 import hudson.model.listeners.RunListener;
 import hudson.tasks.junit.TestResultAction;
+import hudson.plugins.cobertura.CoberturaBuildAction;
 import io.jenkins.plugins.pipelinemonitor.model.BuildStatus;
 import io.jenkins.plugins.pipelinemonitor.model.TestResults;
+import io.jenkins.plugins.pipelinemonitor.model.CodeCoverage;
 import io.jenkins.plugins.pipelinemonitor.util.RestClientUtil;
 import jenkins.model.Jenkins;
 
@@ -36,6 +38,10 @@ public class BuildStatusListener extends RunListener<Run<?, ?>> {
         TestResultAction testResultAction = run.getAction(TestResultAction.class);
         TestResults testResults = TestResults.fromJUnitTestResults(testResultAction);
         RestClientUtil.postToService("http://10.183.42.147:8080", testResults);
+
+        CoberturaBuildAction coberturaAction = run.getAction(CoberturaBuildAction.class);
+        CodeCoverage codeCoverage = CodeCoverage.fromCobertura(coberturaAction);
+        RestClientUtil.postToService("http://10.183.42.147:8080", codeCoverage);
         
     }
 
