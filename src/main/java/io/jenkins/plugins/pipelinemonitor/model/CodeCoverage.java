@@ -3,23 +3,20 @@
  *
  * Copyright 2018 jxpearce.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package io.jenkins.plugins.pipelinemonitor.model;
 
@@ -36,141 +33,144 @@ import javax.annotation.Nullable;
  */
 public class CodeCoverage {
 
-    float conditionals;
-    float classes;
-    float files;
-    float lines;
-    float methods;
-    float packages;
-    float instructions;
+  float conditionals;
+  float classes;
+  float files;
+  float lines;
+  float methods;
+  float packages;
+  float instructions;
 
-    public static CodeCoverage fromCobertura(@Nullable CoberturaBuildAction coberturaAction) {
-        if (coberturaAction == null) {
-            return null;
-        }
-        CodeCoverage codeCoverage = new CodeCoverage();
-        Map<CoverageMetric, Ratio> results = coberturaAction.getResults();
-        codeCoverage.setInstructions(-1f);
-        if (results != null) {
-            codeCoverage.setConditionals(results.get(CoverageMetric.CONDITIONAL));
-            codeCoverage.setClasses(results.get(CoverageMetric.CLASSES));
-            codeCoverage.setFiles(results.get(CoverageMetric.FILES));
-            codeCoverage.setLines(results.get(CoverageMetric.LINE));
-            codeCoverage.setMethods(results.get(CoverageMetric.METHOD));
-            codeCoverage.setPackages(results.get(CoverageMetric.PACKAGES));
-        }
-
-        return codeCoverage;
+  public static CodeCoverage fromCobertura(@Nullable CoberturaBuildAction coberturaAction) {
+    if (coberturaAction == null) {
+      return null;
+    }
+    CodeCoverage codeCoverage = new CodeCoverage();
+    Map<CoverageMetric, Ratio> results = coberturaAction.getResults();
+    codeCoverage.setInstructions(-1f);
+    if (results != null) {
+      codeCoverage.setConditionals(results.get(CoverageMetric.CONDITIONAL));
+      codeCoverage.setClasses(results.get(CoverageMetric.CLASSES));
+      codeCoverage.setFiles(results.get(CoverageMetric.FILES));
+      codeCoverage.setLines(results.get(CoverageMetric.LINE));
+      codeCoverage.setMethods(results.get(CoverageMetric.METHOD));
+      codeCoverage.setPackages(results.get(CoverageMetric.PACKAGES));
     }
 
-    public float getConditionals() {
-        return conditionals;
-    }
+    return codeCoverage;
+  }
 
-    public void setConditionals(@Nullable Ratio coverage) {
-        if (coverage != null) {
-            conditionals = coverage.getPercentageFloat();
-        }
-    }
+  public float getConditionals() {
+    return conditionals;
+  }
 
-    public void setConditionals(float conditionals) {
-        this.conditionals = conditionals;
+  public void setConditionals(@Nullable Ratio coverage) {
+    if (coverage != null) {
+      conditionals = coverage.getPercentageFloat();
     }
+  }
 
-    public float getFiles() {
-        return files;
-    }
+  public void setConditionals(float conditionals) {
+    this.conditionals = conditionals;
+  }
 
-    public void setFiles(@Nullable Ratio coverage) {
-        if (coverage != null) {
-            files = coverage.getPercentageFloat();
-        }
-    }
+  public float getFiles() {
+    return files;
+  }
 
-    public void setFiles(float files) {
-        this.files = files;
+  public void setFiles(@Nullable Ratio coverage) {
+    if (coverage != null) {
+      files = coverage.getPercentageFloat();
     }
+  }
 
-    public float getLines() {
-        return lines;
-    }
+  public void setFiles(float files) {
+    this.files = files;
+  }
 
-    public void setLines(@Nullable Ratio coverage) {
-        if (coverage != null) {
-            lines = coverage.getPercentageFloat();
-        }
-    }
+  public float getLines() {
+    return lines;
+  }
 
-    public void setLines(float lines) {
-        this.lines = lines;
+  public void setLines(@Nullable Ratio coverage) {
+    if (coverage != null) {
+      lines = coverage.getPercentageFloat();
     }
+  }
 
-    public float getClasses() {
-        return classes;
-    }
+  public void setLines(float lines) {
+    this.lines = lines;
+  }
 
-    public void setClasses(@Nullable Ratio coverage) {
-        if (coverage != null) {
-            classes = coverage.getPercentageFloat();
-        }
-    }
+  public float getClasses() {
+    return classes;
+  }
 
-    public void setClasses(float classes) {
-        this.classes = classes;
+  public void setClasses(@Nullable Ratio coverage) {
+    if (coverage != null) {
+      classes = coverage.getPercentageFloat();
     }
+  }
 
-    public float getMethods() {
-        return methods;
-    }
+  public void setClasses(float classes) {
+    this.classes = classes;
+  }
 
-    public void setMethods(@Nullable Ratio coverage) {
-        if (coverage != null) {
-            methods = coverage.getPercentageFloat();
-        }
-    }
+  public float getMethods() {
+    return methods;
+  }
 
-    public void setMethods(float methods) {
-        this.methods = methods;
+  public void setMethods(@Nullable Ratio coverage) {
+    if (coverage != null) {
+      methods = coverage.getPercentageFloat();
     }
+  }
 
-    public float getPackages() {
-        return packages;
-    }
+  public void setMethods(float methods) {
+    this.methods = methods;
+  }
 
-    public void setPackages(@Nullable Ratio coverage) {
-        if (coverage != null) {
-            packages = coverage.getPercentageFloat();
-        }
-    }
+  public float getPackages() {
+    return packages;
+  }
 
-    public void setPackages(float packages) {
-        this.packages = packages;
+  public void setPackages(@Nullable Ratio coverage) {
+    if (coverage != null) {
+      packages = coverage.getPercentageFloat();
     }
+  }
 
-    public float getInstructions() {
-        return instructions;
-    }
+  public void setPackages(float packages) {
+    this.packages = packages;
+  }
 
-    public void setInstructions(float instructions) {
-        this.instructions = instructions;
-    }
+  public float getInstructions() {
+    return instructions;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CodeCoverage)) return false;
-        CodeCoverage coverage = (CodeCoverage) o;
-        return Float.compare(coverage.getConditionals(), getConditionals()) == 0 &&
-                Float.compare(coverage.getClasses(), getClasses()) == 0 &&
-                Float.compare(coverage.getFiles(), getFiles()) == 0 &&
-                Float.compare(coverage.getLines(), getLines()) == 0 &&
-                Float.compare(coverage.getMethods(), getMethods()) == 0 &&
-                Float.compare(coverage.getPackages(), getPackages()) == 0 &&
-                Float.compare(coverage.getInstructions(), getInstructions()) == 0;
-    }
+  public void setInstructions(float instructions) {
+    this.instructions = instructions;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getConditionals(), getClasses(), getFiles(), getLines(), getMethods(), getPackages(), getInstructions());
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (!(o instanceof CodeCoverage))
+      return false;
+    CodeCoverage coverage = (CodeCoverage) o;
+    return Float.compare(coverage.getConditionals(), getConditionals()) == 0
+        && Float.compare(coverage.getClasses(), getClasses()) == 0
+        && Float.compare(coverage.getFiles(), getFiles()) == 0
+        && Float.compare(coverage.getLines(), getLines()) == 0
+        && Float.compare(coverage.getMethods(), getMethods()) == 0
+        && Float.compare(coverage.getPackages(), getPackages()) == 0
+        && Float.compare(coverage.getInstructions(), getInstructions()) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getConditionals(), getClasses(), getFiles(), getLines(), getMethods(),
+        getPackages(), getInstructions());
+  }
 }
