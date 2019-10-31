@@ -176,7 +176,7 @@ public class StageStatusListener implements GraphListener {
    * @return true if it's a stage node; false otherwise
    */
   private static boolean isStage(FlowNode node) {
-    return node2 != null && ((node.getAction(StageAction.class) != null)
+    return node != null && ((node.getAction(StageAction.class) != null)
         || (node.getAction(LabelAction.class) != null
             && node.getAction(ThreadNameAction.class) == null));
   }
