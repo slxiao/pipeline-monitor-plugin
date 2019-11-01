@@ -1,6 +1,7 @@
 package io.jenkins.plugins.pipelinemonitor;
 
 import hudson.Extension;
+import hudson.model.Result;
 import hudson.model.Run;
 import hudson.model.listeners.RunListener;
 import hudson.plugins.cobertura.CoberturaBuildAction;
@@ -12,8 +13,8 @@ import io.jenkins.plugins.pipelinemonitor.util.RestClientUtil;
 import jenkins.model.Jenkins;
 
 /**
- * Implements {@link RunListener} extension point to
- * provide job status information to subscribers as jobs complete.
+ * Implements {@link RunListener} extension point to provide job status information to subscribers
+ * as jobs complete.
  *
  * @author Jeff Pearce (GitHub jeffpearce)
  */
@@ -21,15 +22,20 @@ import jenkins.model.Jenkins;
 public class BuildStatusListener extends RunListener<Run<?, ?>> {
 
   /**
-  * Collect build data and send for notification.
-  *
-  * @param run the run build
-  */
+   * Collect build data and send for notification.
+   *
+   * @param run the run build
+   */
   @Override
   public void onFinalized(final Run<?, ?> run) {
 
-    final String buildResult = run.getResult() == null
-              ? "ONGOING" : run.getResult().toString();
+    final String buildResult;
+    Result result = run.getResult();
+    if (result == null) {
+      buildResult = "ONGOING";
+    } else {
+      buildResult = result.toString();
+    }
 
     BuildStatus build = new BuildStatus();
     build.setJenkinsUrl(Jenkins.getInstance().getRootUrl());

@@ -130,28 +130,47 @@
   <build>
     <plugins>
          <plugin>
-   <groupId>org.apache.maven.plugins</groupId>
-   <artifactId>maven-checkstyle-plugin</artifactId>
-   <version>3.1.0</version>
-   <configuration>
-     <configLocation>google_checks.xml</configLocation>
-     <encoding>UTF-8</encoding>
-     <consoleOutput>true</consoleOutput>
-     <failsOnError>false</failsOnError>
-     <failOnViolation>true</failOnViolation>
-     <violationSeverity>warning</violationSeverity>
-     <linkXRef>false</linkXRef>
-   </configuration>
-   <executions>
-     <execution>
-       <id>validate</id>
-       <phase>validate</phase>
-       <goals>
-         <goal>check</goal>
-       </goals>
-     </execution>
-   </executions>
- </plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>3.1.0</version>
+            <configuration>
+                <configLocation>google_checks.xml</configLocation>
+                <encoding>UTF-8</encoding>
+                <consoleOutput>true</consoleOutput>
+                <failsOnError>false</failsOnError>
+                <failOnViolation>true</failOnViolation>
+                <violationSeverity>warning</violationSeverity>
+                <linkXRef>false</linkXRef>
+            </configuration>
+            <executions>
+                <execution>
+                    <id>validate</id>
+                    <phase>validate</phase>
+                    <goals>
+                        <goal>check</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <version>3.1.12.2</version>
+            <configuration>
+                <consoleOutput>true</consoleOutput>
+                <failsOnError>false</failsOnError>
+                <failOnViolation>true</failOnViolation>
+                <violationSeverity>warning</violationSeverity>
+            </configuration>
+            <executions>
+                <execution>
+                <phase>validate</phase> 
+                <goals>
+                <goal>check</goal> 
+                </goals>
+                 </execution>
+            </executions>
+        </plugin>
     </plugins>
   </build>
 </project>

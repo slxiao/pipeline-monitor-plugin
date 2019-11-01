@@ -27,7 +27,7 @@ public class BuildStatus {
     this.jenkinsUrl = jenkinsUrl;
     this.jobName = jobName;
     this.number = number;
-    this.startTime = startTime;
+    this.startTime = new Date(startTime.getTime());
     this.result = result;
     this.duration = duration;
   }
@@ -69,11 +69,11 @@ public class BuildStatus {
   }
 
   public Date getStartTime() {
-    return startTime;
+    return new Date(startTime.getTime());
   }
 
   public void setStartTime(Date startTime) {
-    this.startTime = startTime;
+    this.startTime = new Date(startTime.getTime());
   }
 
   public String getResult() {

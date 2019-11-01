@@ -112,11 +112,12 @@ public class StageStatusListener implements GraphListener {
           stage.setResult(buildState);
 
           Run<?, ?> run = runFor(fn.getExecution());
-          stage.setJenkinsUrl(Jenkins.getInstance().getRootUrl());
-          stage.setJobName(run.getParent().getName());
-          stage.setNumber(run.getNumber());
-
-          RestClientUtil.postToService("http://10.183.42.147:8080", stage);
+          if (run != null) {
+            stage.setJenkinsUrl(Jenkins.getInstance().getRootUrl());
+            stage.setJobName(run.getParent().getName());
+            stage.setNumber(run.getNumber());
+            RestClientUtil.postToService("http://10.183.42.147:8080", stage);
+          }
         }
       }
     } catch (IOException ex) {

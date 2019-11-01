@@ -38,7 +38,7 @@ public class PipelineStageStatus {
     this.jobName = jobName;
     this.number = number;
     this.name = name;
-    this.startTime = startTime;
+    this.startTime = new Date(startTime.getTime());
     this.result = result;
     this.duration = duration;
   }
@@ -89,11 +89,11 @@ public class PipelineStageStatus {
   }
 
   public Date getStartTime() {
-    return startTime;
+    return new Date(startTime.getTime());
   }
 
   public void setStartTime(Date startTime) {
-    this.startTime = startTime;
+    this.startTime = new Date(startTime.getTime());
   }
 
   public String getResult() {
