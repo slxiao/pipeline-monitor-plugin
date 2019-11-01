@@ -161,6 +161,15 @@
                 <failsOnError>false</failsOnError>
                 <failOnViolation>true</failOnViolation>
                 <violationSeverity>warning</violationSeverity>
+                <includeFilterFile>${session.executionRootDirectory}/spotbugs-security-include.xml</includeFilterFile>
+                <excludeFilterFile>${session.executionRootDirectory}/spotbugs-security-exclude.xml</excludeFilterFile>
+                <plugins>
+                    <plugin>
+                        <groupId>com.h3xstream.findsecbugs</groupId>
+                        <artifactId>findsecbugs-plugin</artifactId>
+                        <version>1.9.0</version>
+                    </plugin>
+                </plugins>
             </configuration>
             <executions>
                 <execution>
