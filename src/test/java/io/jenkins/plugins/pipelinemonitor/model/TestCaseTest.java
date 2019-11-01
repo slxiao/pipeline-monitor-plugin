@@ -42,6 +42,9 @@ public class TestCaseTest {
     TestCase result = TestCase.fromCaseResult(caseResult);
     assertTrue(result.isPassed());
     assertEquals(result.getResult(), TestCase.TestCaseResult.Passed);
+    assertEquals(result.getPassedCount(), 1);
+    assertEquals(result.getFailedCount(), 0);
+    assertEquals(result.getSkippedCount(), 0);
   }
 
   @Test
