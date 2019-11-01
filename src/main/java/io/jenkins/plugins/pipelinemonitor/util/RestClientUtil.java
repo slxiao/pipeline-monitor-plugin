@@ -5,10 +5,9 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.json.JSONObject;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONObject;
 
 public class RestClientUtil {
 
@@ -21,9 +20,15 @@ public class RestClientUtil {
     throw new IllegalAccessError("Utility class");
   }
 
+  /**
+   * post object to HTTP service.
+   * 
+   * @param url    HTTP service URL.
+   * @param object object to be posted.
+   */
   public static void postToService(final String url, Object object) {
     try {
-      String jsonToPost = JSONUtil.convertToJson(object);
+      String jsonToPost = JsonUtil.convertToJson(object);
       LOGGER.log(Level.WARNING, jsonToPost);
       Unirest.post(url).header(ACCEPT, APPLICATION_JSON).header(CONTENT_TYPE, APPLICATION_JSON)
           .body(jsonToPost).asJsonAsync(new Callback<JsonNode>() {
@@ -46,16 +51,5 @@ public class RestClientUtil {
     } catch (Throwable e) {
       LOGGER.log(Level.WARNING, "Unable to post event to url " + url, e);
     }
-  }
-
-  public static JSONObject getJson(final String url) {
-    try {
-      HttpResponse<JsonNode> response = Unirest.get(url).header(ACCEPT, APPLICATION_JSON)
-          .header(CONTENT_TYPE, APPLICATION_JSON).asJson();
-      return response.getBody().getObject();
-    } catch (UnirestException e) {
-      LOGGER.log(Level.WARNING, "Json call have failed in unirest.", e);
-    }
-    return null;
   }
 }

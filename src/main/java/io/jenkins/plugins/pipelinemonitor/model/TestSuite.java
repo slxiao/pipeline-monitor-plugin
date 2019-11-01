@@ -18,6 +18,7 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 package io.jenkins.plugins.pipelinemonitor.model;
 
 import com.google.gson.annotations.SerializedName;
@@ -26,7 +27,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- *
+ * model for test suite.
+ * 
  * @author Jeff Pearce (GitHub jeffpearce)
  */
 public class TestSuite {
@@ -57,6 +59,11 @@ public class TestSuite {
     return testCases;
   }
 
+  /**
+   * add test cases.
+   * 
+   * @param testCase test case.
+   */
   public void addTestCases(TestCase testCase) {
     passedTestCaseCount += testCase.getPassedCount();
     skippedTestCaseCount += testCase.getSkippedCount();
@@ -90,10 +97,12 @@ public class TestSuite {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (!(o instanceof TestSuite))
+    }
+    if (!(o instanceof TestSuite)) {
       return false;
+    }
     TestSuite suite = (TestSuite) o;
     return getPassedTestCaseCount() == suite.getPassedTestCaseCount()
         && getSkippedTestCaseCount() == suite.getSkippedTestCaseCount()

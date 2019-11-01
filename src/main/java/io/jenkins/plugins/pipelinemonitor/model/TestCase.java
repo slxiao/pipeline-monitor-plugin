@@ -18,6 +18,7 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 package io.jenkins.plugins.pipelinemonitor.model;
 
 import hudson.tasks.junit.CaseResult;
@@ -25,7 +26,8 @@ import hudson.tasks.junit.CaseResult;
 import java.util.Objects;
 
 /**
- *
+ * Model for test case.
+ * 
  * @author Jeff Pearce (GitHub jeffpearce)
  */
 public class TestCase {
@@ -41,6 +43,12 @@ public class TestCase {
 
   private TestCaseResult result;
 
+  /**
+   * get test case result from Junit CaseResult.
+   * 
+   * @param caseResult Junit case result.
+   * @return test case result.
+   */
   public static TestCase fromCaseResult(CaseResult caseResult) {
     TestCase testCase = new TestCase();
 
@@ -62,6 +70,11 @@ public class TestCase {
     return passed;
   }
 
+  /**
+   * set case as passed or not.
+   * 
+   * @param passed passed or not
+   */
   public void setPassed(boolean passed) {
     this.passed = passed;
     if (this.passed) {
@@ -81,6 +94,11 @@ public class TestCase {
     return failed;
   }
 
+  /**
+   * set case as failed or not.
+   * 
+   * @param failed failed or not.
+   */
   public void setFailed(boolean failed) {
     this.failed = failed;
     if (this.failed) {
@@ -92,6 +110,11 @@ public class TestCase {
     return skipped;
   }
 
+  /**
+   * set case as skipped or not.
+   * 
+   * @param skipped skipped or not.
+   */
   public void setSkipped(boolean skipped) {
     this.skipped = skipped;
     if (this.skipped) {
@@ -117,10 +140,12 @@ public class TestCase {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (!(o instanceof TestCase))
+    }
+    if (!(o instanceof TestCase)) {
       return false;
+    }
     TestCase testCase = (TestCase) o;
     return isFailed() == testCase.isFailed() && isPassed() == testCase.isPassed()
         && isSkipped() == testCase.isSkipped() && Objects.equals(getName(), testCase.getName())

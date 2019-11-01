@@ -21,6 +21,17 @@ public class PipelineStageStatus {
 
   private long duration;
 
+  /**
+   * Construnctor of Pipeline stage status.
+   * 
+   * @param jenkinsUrl jenkins URL.
+   * @param jobName    jenkins job name.
+   * @param number     jenkins build number.
+   * @param name       stage name.
+   * @param startTime  stage start time.
+   * @param result     stage result.
+   * @param duration   stage duraiton.
+   */
   public PipelineStageStatus(String jenkinsUrl, String jobName, int number, String name,
       Date startTime, String result, long duration) {
     this.jenkinsUrl = jenkinsUrl;
@@ -32,6 +43,9 @@ public class PipelineStageStatus {
     this.duration = duration;
   }
 
+  /**
+   * Construnctor of Pipeline stage status.
+   */
   public PipelineStageStatus() {
     this.jenkinsUrl = "";
     this.jobName = "";

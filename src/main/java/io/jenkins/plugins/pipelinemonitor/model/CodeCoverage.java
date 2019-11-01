@@ -18,6 +18,7 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 package io.jenkins.plugins.pipelinemonitor.model;
 
 import hudson.plugins.cobertura.CoberturaBuildAction;
@@ -28,6 +29,7 @@ import java.util.Objects;
 import javax.annotation.Nullable;
 
 /**
+ * model for code coverage.
  *
  * @author Jeff Pearce (GitHub jeffpearce)
  */
@@ -41,6 +43,12 @@ public class CodeCoverage {
   float packages;
   float instructions;
 
+  /**
+   * generate code coverage result from Cobertura report.
+   * 
+   * @param coberturaAction Cobertura action.
+   * @return code coverage result.
+   */
   public static CodeCoverage fromCobertura(@Nullable CoberturaBuildAction coberturaAction) {
     if (coberturaAction == null) {
       return null;
@@ -64,12 +72,22 @@ public class CodeCoverage {
     return conditionals;
   }
 
+  /**
+   * set conditional coverage.
+   * 
+   * @param coverage conditional coverage rate in Ratio.
+   */
   public void setConditionals(@Nullable Ratio coverage) {
     if (coverage != null) {
       conditionals = coverage.getPercentageFloat();
     }
   }
 
+  /**
+   * set conditional coverage.
+   * 
+   * @param conditionals conditional coverage rate in float.
+   */
   public void setConditionals(float conditionals) {
     this.conditionals = conditionals;
   }
@@ -78,12 +96,22 @@ public class CodeCoverage {
     return files;
   }
 
+  /**
+   * set file coverage rate.
+   * 
+   * @param coverage file coverage rate in Ratio.
+   */
   public void setFiles(@Nullable Ratio coverage) {
     if (coverage != null) {
       files = coverage.getPercentageFloat();
     }
   }
 
+  /**
+   * set file coverage rate.
+   * 
+   * @param files file coverage rate in float.
+   */
   public void setFiles(float files) {
     this.files = files;
   }
@@ -92,6 +120,11 @@ public class CodeCoverage {
     return lines;
   }
 
+  /**
+   * set line coverage.
+   * 
+   * @param coverage line coverage rate in Ratio.
+   */
   public void setLines(@Nullable Ratio coverage) {
     if (coverage != null) {
       lines = coverage.getPercentageFloat();
@@ -106,6 +139,11 @@ public class CodeCoverage {
     return classes;
   }
 
+  /**
+   * set class coverage rate.
+   * 
+   * @param coverage class coverage rate in Ratio.
+   */
   public void setClasses(@Nullable Ratio coverage) {
     if (coverage != null) {
       classes = coverage.getPercentageFloat();
@@ -120,6 +158,11 @@ public class CodeCoverage {
     return methods;
   }
 
+  /**
+   * set method coverage rate.
+   * 
+   * @param coverage method coverage rate in Ratio.
+   */
   public void setMethods(@Nullable Ratio coverage) {
     if (coverage != null) {
       methods = coverage.getPercentageFloat();
@@ -134,6 +177,11 @@ public class CodeCoverage {
     return packages;
   }
 
+  /**
+   * set package coverage rate.
+   * 
+   * @param coverage package coverage rate in Ratio.
+   */
   public void setPackages(@Nullable Ratio coverage) {
     if (coverage != null) {
       packages = coverage.getPercentageFloat();
@@ -154,10 +202,12 @@ public class CodeCoverage {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (!(o instanceof CodeCoverage))
+    }
+    if (!(o instanceof CodeCoverage)) {
       return false;
+    }
     CodeCoverage coverage = (CodeCoverage) o;
     return Float.compare(coverage.getConditionals(), getConditionals()) == 0
         && Float.compare(coverage.getClasses(), getClasses()) == 0

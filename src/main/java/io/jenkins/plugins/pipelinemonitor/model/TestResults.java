@@ -18,6 +18,7 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 package io.jenkins.plugins.pipelinemonitor.model;
 
 import com.google.gson.annotations.SerializedName;
@@ -29,7 +30,8 @@ import java.util.Objects;
 import javax.annotation.Nullable;
 
 /**
- *
+ * model for test results.
+ * 
  * @author Jeff Pearce (GitHub jeffpearce)
  */
 public class TestResults {
@@ -52,6 +54,12 @@ public class TestResults {
     testSuites = new ArrayList<>();
   }
 
+  /**
+   * get test results from Junit test result action.
+   * 
+   * @param testResultAction Junit test result action.
+   * @return test results.
+   */
   public static TestResults fromJUnitTestResults(@Nullable TestResultAction testResultAction) {
 
     if (testResultAction == null) {
@@ -105,10 +113,12 @@ public class TestResults {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (!(o instanceof TestResults))
+    }
+    if (!(o instanceof TestResults)) {
       return false;
+    }
     TestResults that = (TestResults) o;
     return getPassedTestCaseCount() == that.getPassedTestCaseCount()
         && getSkippedTestCaseCount() == that.getSkippedTestCaseCount()
