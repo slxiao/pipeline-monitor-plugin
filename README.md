@@ -9,7 +9,7 @@ A Jenkins plugin to collect pipeline build, stage and test result and send these
 - [x] Collect Cobertura test coverage result
 - [ ] Collect diff coverage result (**Pending, may be a dedicated diff-coverage-plugin is preferred**)
 - [x] Static checking
-- [ ] Dynamic checking
+- [ ] Dynamic checking (**Pending, there is no available tools**)
 - [ ] Unit testing
 
 # Lisense
