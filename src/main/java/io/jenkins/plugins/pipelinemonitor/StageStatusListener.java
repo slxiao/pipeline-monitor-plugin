@@ -52,12 +52,6 @@ public class StageStatusListener implements GraphListener {
         log(Level.WARNING, "checkEnableBuildStatus");
       } else if (fn instanceof StepAtomNode) {
 
-        // We don't need to look at atom nodes for declarative pipeline jobs, because
-        // they have a nice model containing all the stages
-        if (isDeclarativePipelineJob(fn)) {
-          return;
-        }
-
         ErrorAction errorAction = fn.getError();
 
         if (errorAction == null) {
@@ -177,20 +171,9 @@ public class StageStatusListener implements GraphListener {
    * @return true if it's a stage node; false otherwise
    */
   private static boolean isStage(FlowNode node) {
-    return node != null && ((node.getAction(StageAction.class) != null)
-        || (node.getAction(LabelAction.class) != null
-            && node.getAction(ThreadNameAction.class) == null));
-  }
-
-  /**
-   * Determines if the node belongs to a declarative pipeline.
-   *
-   * @param fn node of a workflow
-   * @return true/false
-   */
-  private static boolean isDeclarativePipelineJob(FlowNode fn) {
-    log(Level.WARNING, "isDeclarativePipelineJob: false");
-    return false;
+    return node != null
+        && (node.getAction(StageAction.class) != null || node.getAction(LabelAction.class) != null
+            && node.getAction(ThreadNameAction.class) == null);
   }
 
   /**

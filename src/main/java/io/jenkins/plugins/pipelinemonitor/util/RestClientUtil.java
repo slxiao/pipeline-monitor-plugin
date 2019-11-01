@@ -7,7 +7,6 @@ import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.JSONObject;
 
 public class RestClientUtil {
 
