@@ -11,6 +11,7 @@ A Jenkins plugin to collect pipeline build, stage and test result and send these
 - [x] Static checking
 - [ ] Dynamic checking (**Pending, there is no available tools**)
 - [ ] Unit testing
+- [ ] Configuration
 
 # Lisense
 MIT
