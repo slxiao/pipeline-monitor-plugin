@@ -131,6 +131,11 @@
             <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>jacoco</artifactId>
+            <version>2.2.1</version>
+        </dependency>
     </dependencies>
     <!-- Assuming you want to host on @jenkinsci:
     <url>https://wiki.jenkins.io/display/JENKINS/TODO+Plugin</url>
