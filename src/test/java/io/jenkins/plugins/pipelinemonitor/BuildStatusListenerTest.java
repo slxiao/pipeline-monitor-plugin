@@ -56,7 +56,8 @@ import io.jenkins.plugins.pipelinemonitor.model.TestResults;
  * @author Jeff Pearce (GitHub jeffpearce)
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({RestClientUtil.class, Jenkins.class, TestResults.class, CodeCoverage.class})
+@PrepareForTest({RestClientUtil.class, Jenkins.class, TestResults.class, CodeCoverage.class,
+    Result.class})
 public class BuildStatusListenerTest {
   @Mock
   Jenkins jenkinsMock;
@@ -89,6 +90,48 @@ public class BuildStatusListenerTest {
 
     AbstractBuild run = Mockito.mock(AbstractBuild.class);
     Mockito.when(run.getResult()).thenReturn(null);
+    Mockito.when(run.getNumber()).thenReturn(1);
+    Mockito.when(run.getDuration()).thenReturn((long) 100);
+
+    Job job = Mockito.mock(Job.class);
+    Mockito.when(run.getParent()).thenReturn(job);
+    Mockito.when(job.getName()).thenReturn("test");
+
+    Mockito.when(Jenkins.getInstance()).thenReturn(jenkinsMock);
+    Mockito.when(jenkinsMock.getRootUrl()).thenReturn("http://test.cn");
+
+    Mockito.when(run.getAction(TestResultAction.class)).thenReturn(null);
+    Mockito.when(run.getAction(CoberturaBuildAction.class)).thenReturn(null);
+
+    BuildStatus buildStatusMock = Mockito.mock(BuildStatus.class);
+    Mockito.doNothing().when(buildStatusMock).setJenkinsUrl(Mockito.anyString());
+    Mockito.doNothing().when(buildStatusMock).setJobName(Mockito.anyString());
+    Mockito.doNothing().when(buildStatusMock).setNumber(Mockito.anyInt());
+    Mockito.doNothing().when(buildStatusMock).setResult(Mockito.anyString());
+    Mockito.doNothing().when(buildStatusMock).setDuration(Mockito.anyLong());
+
+    PowerMockito.when(TestResults.class, "fromJUnitTestResults", Mockito.any())
+        .thenReturn(Mockito.mock(TestResults.class));
+
+    PowerMockito.when(CodeCoverage.class, "fromCobertura", Mockito.any())
+        .thenReturn(Mockito.mock(CodeCoverage.class));
+
+    PowerMockito.doNothing().when(RestClientUtil.class, "postToService", Mockito.anyString(),
+        Mockito.any());
+
+    BuildStatusListener instance = new BuildStatusListener();
+    instance.onFinalized(run);
+
+  }
+
+  @Test
+  public void testOnFinalizedSuccess() throws Exception {
+
+    AbstractBuild run = Mockito.mock(AbstractBuild.class);
+    Result resultMock = PowerMockito.mock(Result.class);
+    Mockito.when(resultMock.toString()).thenReturn("SUCCESS");
+
+    Mockito.when(run.getResult()).thenReturn(resultMock);
     Mockito.when(run.getNumber()).thenReturn(1);
     Mockito.when(run.getDuration()).thenReturn((long) 100);
 
