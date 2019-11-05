@@ -4,10 +4,26 @@ import org.junit.*;
 
 import static org.mockito.Mockito.*;
 
+import io.jenkins.plugins.pipelinemonitor.StageStatusListener;
+
 import org.jenkinsci.plugins.workflow.actions.ErrorAction;
 import org.jenkinsci.plugins.workflow.cps.nodes.StepStartNode;
 import org.jenkinsci.plugins.workflow.actions.TagsAction;
-import io.jenkins.plugins.pipelinemonitor.StageStatusListener;
+import org.jenkinsci.plugins.workflow.actions.LabelAction;
+import org.jenkinsci.plugins.workflow.actions.StageAction;
+import org.jenkinsci.plugins.workflow.actions.ThreadNameAction;
+import org.jenkinsci.plugins.workflow.actions.TimingAction;
+import org.jenkinsci.plugins.workflow.cps.nodes.StepAtomNode;
+import org.jenkinsci.plugins.workflow.cps.nodes.StepEndNode;
+import org.jenkinsci.plugins.workflow.flow.FlowExecution;
+import org.jenkinsci.plugins.workflow.flow.GraphListener;
+import org.jenkinsci.plugins.workflow.graph.FlowNode;
+import org.jenkinsci.plugins.workflow.flow.FlowExecutionOwner;
+
+import hudson.model.AbstractBuild;
+import org.jenkinsci.plugins.pipeline.modeldefinition.actions.ExecutionModelAction;
+import org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTStage;
+import org.jenkinsci.plugins.pipeline.modeldefinition.ast.ModelASTStages;
 
 import static org.junit.Assert.assertEquals;
 
@@ -75,4 +91,5 @@ public class StageStatusListenerTest {
     String stateFail = StageStatusListener.buildStateForStage(flowNodeMock, errorActionMock);
     assertEquals(stateFail, "CompletedError");
   }
+
 }
