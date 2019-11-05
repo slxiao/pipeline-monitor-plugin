@@ -25,11 +25,6 @@ import jenkins.model.Jenkins;
 import hudson.model.AbstractBuild;
 import hudson.model.Job;
 import hudson.model.Result;
-import hudson.model.TaskListener;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.isA;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -89,11 +84,8 @@ public class BuildStatusListenerTest {
   public void tearDown() {
   }
 
-  /**
-   * Verifies BuildStatusJobListener onCompleted can be called when there's no build action
-   */
   @Test
-  public void testOnCompletedNoBuildAction() throws Exception {
+  public void testOnFinalizedOngoing() throws Exception {
 
     AbstractBuild run = Mockito.mock(AbstractBuild.class);
     Mockito.when(run.getResult()).thenReturn(null);
@@ -130,4 +122,5 @@ public class BuildStatusListenerTest {
     instance.onFinalized(run);
 
   }
+
 }
