@@ -16,6 +16,7 @@
         <java.level>7</java.level>
         <powermock.version>1.7.4</powermock.version>
         <enforcer.skip>true</enforcer.skip>
+        <maven.test.skip>true</maven.test.skip>
     </properties>
     <name>TODO Plugin</name>
     <description>TODO</description>
@@ -171,6 +172,7 @@
                 <failOnViolation>true</failOnViolation>
                 <violationSeverity>warning</violationSeverity>
                 <linkXRef>false</linkXRef>
+                <skip>true</skip>
             </configuration>
             <executions>
                 <execution>
@@ -187,6 +189,7 @@
             <artifactId>spotbugs-maven-plugin</artifactId>
             <version>3.1.12.2</version>
             <configuration>
+                <skip>true</skip>
                 <consoleOutput>true</consoleOutput>
                 <failsOnError>false</failsOnError>
                 <failOnViolation>true</failOnViolation>
@@ -216,6 +219,7 @@
         <configuration>
             <failOnViolation>true</failOnViolation> <!-- this is actually true by default, but can be disabled -->
             <printFailingErrors>true</printFailingErrors>
+            <skip>true</skip>
         </configuration>
         <executions>
           <execution>

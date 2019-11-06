@@ -43,7 +43,6 @@ public abstract class AbstractRemoteServerDao implements RemoteServerDao {
     payload.put("@timestamp", FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
         .format(Calendar.getInstance().getTime()));
     payload.put("@version", 1);
-
     return payload;
   }
 

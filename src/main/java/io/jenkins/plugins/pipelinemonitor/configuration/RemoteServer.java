@@ -53,7 +53,6 @@ public abstract class RemoteServer<T extends AbstractRemoteServerDao>
   }
 
 
-
   /**
    * Creates a new {@link AbstractRemoteServerDao} instance corresponding to this configuration.
    *

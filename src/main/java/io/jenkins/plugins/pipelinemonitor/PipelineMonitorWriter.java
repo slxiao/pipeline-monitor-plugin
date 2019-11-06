@@ -51,7 +51,6 @@ public class PipelineMonitorWriter {
   private final Run<?, ?> build;
   private final TaskListener listener;
   private final BuildData buildData;
-  private final String jenkinsUrl;
   private final RemoteServerDao dao;
   private boolean connectionBroken;
   private Charset charset;
@@ -64,10 +63,8 @@ public class PipelineMonitorWriter {
     this.charset = charset;
     this.dao = this.getDaoOrNull();
     if (this.dao == null) {
-      this.jenkinsUrl = "";
       this.buildData = null;
     } else {
-      this.jenkinsUrl = getJenkinsUrl();
       this.buildData = getBuildData();
     }
   }
