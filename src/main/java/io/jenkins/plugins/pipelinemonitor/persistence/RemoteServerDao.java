@@ -32,6 +32,9 @@ import net.sf.json.JSONObject;
  * @since 1.0.0
  */
 public interface RemoteServerDao {
+  static enum ServerType {
+    REDIS, RABBIT_MQ, ELASTICSEARCH, SYSLOG
+  }
 
   public String getDescription();
 

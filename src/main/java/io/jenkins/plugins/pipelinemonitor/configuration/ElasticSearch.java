@@ -1,4 +1,4 @@
-package jenkins.plugins.logstash.configuration;
+package io.jenkins.plugins.pipelinemonitor.configuration;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -16,10 +16,10 @@ import org.kohsuke.stapler.QueryParameter;
 import hudson.Extension;
 import hudson.util.FormValidation;
 import hudson.util.Secret;
-import jenkins.plugins.logstash.Messages;
-import jenkins.plugins.logstash.persistence.ElasticSearchDao;
 
-public class ElasticSearch extends LogstashIndexer<ElasticSearchDao> {
+import io.jenkins.plugins.pipelinemonitor.persistence.ElasticSearchDao;
+
+public class ElasticSearch extends RemoteServer<ElasticSearchDao> {
   private String username;
   private Secret password;
   private URI uri;
@@ -124,7 +124,7 @@ public class ElasticSearch extends LogstashIndexer<ElasticSearchDao> {
   }
 
   @Extension
-  public static class ElasticSearchDescriptor extends LogstashIndexerDescriptor {
+  public static class ElasticSearchDescriptor extends RemoteServerDescriptor {
     @Override
     public String getDisplayName() {
       return "Elastic Search";
@@ -137,7 +137,7 @@ public class ElasticSearch extends LogstashIndexer<ElasticSearchDao> {
 
     public FormValidation doCheckUrl(@QueryParameter("value") String value) {
       if (StringUtils.isBlank(value)) {
-        return FormValidation.warning(Messages.PleaseProvideHost());
+        return FormValidation.warning("warning!");
       }
       try {
         URL url = new URL(value);
@@ -160,13 +160,13 @@ public class ElasticSearch extends LogstashIndexer<ElasticSearchDao> {
 
     public FormValidation doCheckMimeType(@QueryParameter("value") String value) {
       if (StringUtils.isBlank(value)) {
-        return FormValidation.error(Messages.ValueIsRequired());
+        return FormValidation.error("error!");
       }
       try {
         // This is simply to check validity of the given mimeType
         new MimeType(value);
       } catch (MimeTypeParseException e) {
-        return FormValidation.error(Messages.ProvideValidMimeType());
+        return FormValidation.error("error!");
       }
       return FormValidation.ok();
     }

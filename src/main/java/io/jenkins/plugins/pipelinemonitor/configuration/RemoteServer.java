@@ -14,27 +14,26 @@ import hudson.model.ReconfigurableDescribable;
 import hudson.model.Descriptor.FormException;
 import hudson.util.FormValidation;
 import jenkins.model.Jenkins;
-import jenkins.plugins.logstash.Messages;
-import jenkins.plugins.logstash.persistence.AbstractLogstashIndexerDao;
+import io.jenkins.plugins.pipelinemonitor.persistence.AbstractRemoteServerDao;
 import net.sf.json.JSONObject;
 
 /**
  * Extension point for logstash indexers. This extension point provides the configuration for the
  * indexer. You also have to implement the actual indexer in a separate class extending
- * {@link AbstractLogstashIndexerDao}.
+ * {@link AbstractRemoteServerDao}.
  *
  * @param <T> The class implementing the push to the indexer
  */
-public abstract class LogstashIndexer<T extends AbstractLogstashIndexerDao>
-    extends AbstractDescribableImpl<LogstashIndexer<?>>
-    implements ExtensionPoint, ReconfigurableDescribable<LogstashIndexer<?>> {
+public abstract class RemoteServer<T extends AbstractRemoteServerDao>
+    extends AbstractDescribableImpl<RemoteServer<?>>
+    implements ExtensionPoint, ReconfigurableDescribable<RemoteServer<?>> {
   protected transient T instance;
 
   /**
-   * Gets the instance of the actual {@link AbstractLogstashIndexerDao} that is represented by this
+   * Gets the instance of the actual {@link AbstractRemoteServerDao} that is represented by this
    * configuration.
    *
-   * @return {@link AbstractLogstashIndexerDao} instance
+   * @return {@link AbstractRemoteServerDao} instance
    */
   @Nonnull
   public synchronized T getInstance() {
@@ -56,20 +55,20 @@ public abstract class LogstashIndexer<T extends AbstractLogstashIndexerDao>
 
 
   /**
-   * Creates a new {@link AbstractLogstashIndexerDao} instance corresponding to this configuration.
+   * Creates a new {@link AbstractRemoteServerDao} instance corresponding to this configuration.
    *
-   * @return {@link AbstractLogstashIndexerDao} instance
+   * @return {@link AbstractRemoteServerDao} instance
    */
   protected abstract T createIndexerInstance();
 
 
   @SuppressWarnings("unchecked")
-  public static DescriptorExtensionList<LogstashIndexer<?>, Descriptor<LogstashIndexer<?>>> all() {
-    return (DescriptorExtensionList<LogstashIndexer<?>, Descriptor<LogstashIndexer<?>>>) Jenkins
-        .getInstance().getDescriptorList(LogstashIndexer.class);
+  public static DescriptorExtensionList<RemoteServer<?>, Descriptor<RemoteServer<?>>> all() {
+    return (DescriptorExtensionList<RemoteServer<?>, Descriptor<RemoteServer<?>>>) Jenkins
+        .getInstance().getDescriptorList(RemoteServer.class);
   }
 
-  public static abstract class LogstashIndexerDescriptor extends Descriptor<LogstashIndexer<?>> {
+  public static abstract class RemoteServerDescriptor extends Descriptor<RemoteServer<?>> {
     /*
      * Form validation methods
      */
@@ -77,7 +76,7 @@ public abstract class LogstashIndexer<T extends AbstractLogstashIndexerDao>
       try {
         Integer.parseInt(value);
       } catch (NumberFormatException e) {
-        return FormValidation.error(Messages.ValueIsInt());
+        return FormValidation.error("error!");
       }
 
       return FormValidation.ok();
@@ -85,7 +84,7 @@ public abstract class LogstashIndexer<T extends AbstractLogstashIndexerDao>
 
     public FormValidation doCheckHost(@QueryParameter("value") String value) {
       if (StringUtils.isBlank(value)) {
-        return FormValidation.warning(Messages.PleaseProvideHost());
+        return FormValidation.warning("error!");
       }
 
       return FormValidation.ok();
@@ -98,7 +97,7 @@ public abstract class LogstashIndexer<T extends AbstractLogstashIndexerDao>
    * {@inheritDoc}
    */
   @Override
-  public LogstashIndexer<T> reconfigure(StaplerRequest req, JSONObject form) throws FormException {
+  public RemoteServer<T> reconfigure(StaplerRequest req, JSONObject form) throws FormException {
     req.bindJSON(this, form);
     return this;
   }
