@@ -13,14 +13,13 @@ import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.StaplerRequest;
 
-import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.http.client.utils.URIBuilder;
 import hudson.Extension;
 import hudson.init.InitMilestone;
 import hudson.init.Initializer;
 import jenkins.model.GlobalConfiguration;
 
-import io.jenkins.plugins.pipelinemonitor.configuration.ElasticSearch;;
+import io.jenkins.plugins.pipelinemonitor.configuration.ElasticSearch;
 import io.jenkins.plugins.pipelinemonitor.configuration.RemoteServer;
 
 import io.jenkins.plugins.pipelinemonitor.persistence.RemoteServerDao;
@@ -110,12 +109,12 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
   @Initializer(after = InitMilestone.JOB_LOADED)
   public void migrateData() {
     if (!dataMigrated) {
-      Descriptor descriptor = PipelineMonitorInstallation.getLogstashDescriptor();
+      Descriptor descriptor = PipelineMonitorInstallation.getPipelineMonitorDescriptor();
       if (descriptor.getType() != null) {
         ServerType type = descriptor.getType();
         switch (type) {
           case ELASTICSEARCH:
-            LOGGER.log(Level.INFO, "Migrating logstash configuration for Elastic Search");
+            LOGGER.log(Level.INFO, "Migrating pipeline monitor configuration for Elastic Search");
             URI uri;
             try {
               uri = (new URIBuilder(descriptor.getHost())).setPort(descriptor.getPort())
@@ -129,11 +128,12 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
             } catch (URISyntaxException e) {
               enabled = false;
               LOGGER.log(Level.INFO,
-                  "Migrating logstash configuration for Elastic Search failed: " + e.toString());
+                  "Migrating pipeline monitor configuration for Elastic Search failed: "
+                      + e.toString());
             }
             break;
           default:
-            LOGGER.log(Level.INFO, "unknown logstash Indexer type: " + type);
+            LOGGER.log(Level.INFO, "unknown remote server type: " + type);
             enabled = false;
             break;
         }
@@ -147,8 +147,8 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
   @Override
   public boolean configure(StaplerRequest staplerRequest, JSONObject json) throws FormException {
 
-    // when we bind the stapler request we get a new instance of logstashIndexer.
-    // logstashIndexer is holder for the dao instance.
+    // when we bind the stapler request we get a new instance of remoteServer.
+    // remoteServer is holder for the dao instance.
     // To avoid that we get a new dao instance in case there was no change in configuration
     // we compare it to the currently active configuration.
     staplerRequest.bindJSON(this, json);
@@ -177,5 +177,4 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
   public static PipelineMonitorConfiguration getInstance() {
     return GlobalConfiguration.all().get(PipelineMonitorConfiguration.class);
   }
-
 }

@@ -48,7 +48,7 @@ public class PipelineMonitorInstallation extends ToolInstallation {
     super(name, home, properties);
   }
 
-  public static Descriptor getLogstashDescriptor() {
+  public static Descriptor getPipelineMonitorDescriptor() {
     return (Descriptor) Jenkins.getInstance().getDescriptor(PipelineMonitorInstallation.class);
   }
 
@@ -66,12 +66,10 @@ public class PipelineMonitorInstallation extends ToolInstallation {
       load();
     }
 
-
     @Override
     public String getDisplayName() {
       return Messages.DisplayName();
     }
-
 
     public ServerType getType() {
       return type;
@@ -81,25 +79,20 @@ public class PipelineMonitorInstallation extends ToolInstallation {
       return host;
     }
 
-
     public Integer getPort() {
       return port;
     }
-
 
     public String getUsername() {
       return username;
     }
 
-
     public String getPassword() {
       return password;
     }
 
-
     public String getKey() {
       return key;
     }
-
   }
 }
