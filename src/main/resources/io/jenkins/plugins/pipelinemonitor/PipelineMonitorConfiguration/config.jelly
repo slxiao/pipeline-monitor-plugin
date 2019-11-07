@@ -5,9 +5,6 @@
 	    <f:entry>
 	    	<f:dropdownDescriptorSelector title="${%Remote Type}" field="remoteServer" descriptors="${descriptor.remoteTypes}"/>
 	    </f:entry>
-	    <f:entry title="Enable Globally" field="enableGlobally" description="This will enable it for all pipeline jobs.">
-	      <f:checkbox/>
-	    </f:entry>
     </f:optionalBlock>
   </f:section>
 </j:jelly>

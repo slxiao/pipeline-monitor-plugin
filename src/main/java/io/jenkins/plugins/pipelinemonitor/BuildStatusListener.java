@@ -15,6 +15,9 @@ import jenkins.model.Jenkins;
 
 import java.io.PrintStream;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Implements {@link RunListener} extension point to provide job status information to subscribers
  * as jobs complete.
@@ -33,6 +36,14 @@ public class BuildStatusListener extends RunListener<Run<?, ?>> {
   public void onCompleted(final Run<?, ?> run, TaskListener listener) {
 
     PrintStream errorStream = listener.getLogger();
+    PipelineMonitorConfiguration configuration = PipelineMonitorConfiguration.getInstance();
+    if (!configuration.isEnabled()) {
+      log(Level.WARNING, "pipeline monitor plugin disabled!");
+      return;
+    }
+
+    log(Level.INFO, "start pipeline monitor writer");
+
     PipelineMonitorWriter pmWrite =
         new PipelineMonitorWriter(run, errorStream, listener, run.getCharset());
     pmWrite.write();
@@ -56,6 +67,26 @@ public class BuildStatusListener extends RunListener<Run<?, ?>> {
      * CodeCoverage codeCoverage = CodeCoverage.fromCobertura(coberturaAction);
      * RestClientUtil.postToService("http://10.183.42.147:8080", codeCoverage);
      */
+  }
+
+  /**
+   * Prints to stdout or stderr.
+   *
+   * @param level  INFO/WARNING/ERROR
+   * @param format String that formats the log
+   * @param args   arguments for the formated log string
+   */
+  private static void log(Level level, String format, Object... args) {
+    getLogger().log(level, String.format(format, args));
+  }
+
+  /**
+   * Gets the logger for the listener.
+   *
+   * @return logger object
+   */
+  private static Logger getLogger() {
+    return Logger.getLogger(BuildStatusListener.class.getName());
   }
 
 }

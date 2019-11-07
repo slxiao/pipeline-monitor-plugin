@@ -40,6 +40,9 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
   private boolean enableGlobally = false;
   private transient RemoteServer<?> activeServer;
 
+  // a flag indicating if we're currently in the configure method.
+  private transient boolean configuring = false;
+
   public PipelineMonitorConfiguration() {
     // load();
     if (enabled == null) {
@@ -74,6 +77,9 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
 
   public void setRemoteServer(RemoteServer<?> remoteServer) {
     this.remoteServer = remoteServer;
+    if (!configuring && !Objects.equals(remoteServer, activeServer)) {
+      activeServer = remoteServer;
+    }
   }
 
   @CheckForNull
@@ -125,13 +131,12 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
             }
             break;
           default:
-            LOGGER.log(Level.INFO, "descriptor is null or descriptor type is null");
+            LOGGER.log(Level.INFO, "unsupported!");
             enabled = false;
             break;
         }
         activeServer = remoteServer;
       }
-      LOGGER.log(Level.INFO, "descriptor is null or descriptor type is null");
       dataMigrated = true;
       save();
     }
@@ -140,31 +145,44 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
   @Override
   public boolean configure(StaplerRequest staplerRequest, JSONObject json) throws FormException {
 
-    // when we bind the stapler request we get a new instance of remoteServer.
-    // remoteServer is holder for the dao instance.
+    Boolean e = json.getBoolean("enabled");
+    if (!e) {
+      enabled = false;
+      save();
+      return true;
+    }
+
+    configuring = true;
+
+    // when we bind the stapler request we get a new instance of logstashIndexer.
+    // logstashIndexer is holder for the dao instance.
     // To avoid that we get a new dao instance in case there was no change in configuration
     // we compare it to the currently active configuration.
-    staplerRequest.bindJSON(this, json);
-
     try {
-      // validate
-      remoteServer.validate();
-    } catch (Exception ex) {
-      // You are here which means user is trying to save invalid indexer configuration.
-      // Exception will be thrown here so that it gets displayed on UI.
-      // But before that revert back to original configuration (in-memory)
-      // so that when user refreshes the configuration page, last saved settings will be displayed
-      // again.
-      remoteServer = activeServer;
-      throw new IllegalArgumentException(ex);
-    }
+      staplerRequest.bindJSON(this, json);
 
-    if (!Objects.equals(remoteServer, activeServer)) {
-      activeServer = remoteServer;
-    }
+      try {
+        // validate
+        remoteServer.validate();
+      } catch (Exception ex) {
+        // You are here which means user is trying to save invalid indexer configuration.
+        // Exception will be thrown here so that it gets displayed on UI.
+        // But before that revert back to original configuration (in-memory)
+        // so that when user refreshes the configuration page, last saved settings will be displayed
+        // again.
+        remoteServer = activeServer;
+        throw new IllegalArgumentException(ex);
+      }
 
-    save();
-    return true;
+      if (!Objects.equals(remoteServer, activeServer)) {
+        activeServer = remoteServer;
+      }
+
+      save();
+      return true;
+    } finally {
+      configuring = false;
+    }
   }
 
   public static PipelineMonitorConfiguration getInstance() {
