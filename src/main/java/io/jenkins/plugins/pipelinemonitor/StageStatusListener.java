@@ -47,76 +47,51 @@ public class StageStatusListener implements GraphListener {
    */
   @Override
   public void onNewHead(FlowNode fn) {
-    try {
-      if (isStage(fn)) {
-        log(Level.WARNING, "checkEnableBuildStatus");
-      } else if (fn instanceof StepAtomNode) {
-
-        ErrorAction errorAction = fn.getError();
-
-        if (errorAction == null) {
-          return;
-        }
-
-        List<? extends FlowNode> enclosingBlocks = fn.getEnclosingBlocks();
-        boolean isInStage = false;
-
-        for (FlowNode encosingNode : enclosingBlocks) {
-          if (isStage(encosingNode)) {
-            isInStage = true;
-          }
-        }
-
-        if (isInStage) {
-          return;
-        }
-
-        // We have a non-declarative atom that isn't in a stage, which has failed.
-        // Since normal processing is via stages, we'd normally miss this failure;
-        // send an out of band error notification to make sure it's recordded by any
-        // interested notifiers
-        log(Level.WARNING, "Non stage error: " + fn.getDisplayName());
-
-      } else if (fn instanceof StepEndNode) {
-        log(Level.WARNING, "checkEnableBuildStatus");
-
-        String startId = ((StepEndNode) fn).getStartNode().getId();
-        FlowNode startNode = fn.getExecution().getNode(startId);
-        if (null == startNode) {
-          return;
-        }
-
-        ErrorAction errorAction = fn.getError();
-        String nodeName = null;
-
-        long time = getTime(startNode, fn);
-        LabelAction label = startNode.getAction(LabelAction.class);
-
-        if (label != null) {
-          nodeName = label.getDisplayName();
-        } else if (null != errorAction && startNode instanceof StepStartNode) {
-          nodeName = ((StepStartNode) startNode).getStepName();
-        }
-
-        if (nodeName != null) {
-          String buildState = buildStateForStage(startNode, errorAction);
-          PipelineStageStatus stage = new PipelineStageStatus();
-          stage.setName(nodeName);
-          stage.setDuration(time);
-          stage.setResult(buildState);
-
-          Run<?, ?> run = runFor(fn.getExecution());
-          if (run != null) {
-            stage.setJenkinsUrl(Jenkins.getInstance().getRootUrl());
-            stage.setJobName(run.getParent().getName());
-            stage.setNumber(run.getNumber());
-            RestClientUtil.postToService("http://10.183.42.147:8080", stage);
-          }
-        }
-      }
-    } catch (IOException ex) {
-      log(Level.WARNING, "IOException");
-    }
+    return;
+    /*
+     * try { if (isStage(fn)) { log(Level.WARNING, "checkEnableBuildStatus"); } else if (fn
+     * instanceof StepAtomNode) {
+     * 
+     * ErrorAction errorAction = fn.getError();
+     * 
+     * if (errorAction == null) { return; }
+     * 
+     * List<? extends FlowNode> enclosingBlocks = fn.getEnclosingBlocks(); boolean isInStage =
+     * false;
+     * 
+     * for (FlowNode encosingNode : enclosingBlocks) { if (isStage(encosingNode)) { isInStage =
+     * true; } }
+     * 
+     * if (isInStage) { return; }
+     * 
+     * // We have a non-declarative atom that isn't in a stage, which has failed. // Since normal
+     * processing is via stages, we'd normally miss this failure; // send an out of band error
+     * notification to make sure it's recordded by any // interested notifiers log(Level.WARNING,
+     * "Non stage error: " + fn.getDisplayName());
+     * 
+     * } else if (fn instanceof StepEndNode) { log(Level.WARNING, "checkEnableBuildStatus");
+     * 
+     * String startId = ((StepEndNode) fn).getStartNode().getId(); FlowNode startNode =
+     * fn.getExecution().getNode(startId); if (null == startNode) { return; }
+     * 
+     * ErrorAction errorAction = fn.getError(); String nodeName = null;
+     * 
+     * long time = getTime(startNode, fn); LabelAction label =
+     * startNode.getAction(LabelAction.class);
+     * 
+     * if (label != null) { nodeName = label.getDisplayName(); } else if (null != errorAction &&
+     * startNode instanceof StepStartNode) { nodeName = ((StepStartNode) startNode).getStepName(); }
+     * 
+     * if (nodeName != null) { String buildState = buildStateForStage(startNode, errorAction);
+     * PipelineStageStatus stage = new PipelineStageStatus(); stage.setName(nodeName);
+     * stage.setDuration(time); stage.setResult(buildState);
+     * 
+     * Run<?, ?> run = runFor(fn.getExecution()); if (run != null) {
+     * stage.setJenkinsUrl(Jenkins.getInstance().getRootUrl());
+     * stage.setJobName(run.getParent().getName()); stage.setNumber(run.getNumber());
+     * RestClientUtil.postToService("http://10.183.42.147:8080", stage); } } } } catch (IOException
+     * ex) { log(Level.WARNING, "IOException"); }
+     */
   }
 
   /**

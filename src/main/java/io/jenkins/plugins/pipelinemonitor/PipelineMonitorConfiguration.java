@@ -159,6 +159,7 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
     // To avoid that we get a new dao instance in case there was no change in configuration
     // we compare it to the currently active configuration.
     try {
+      LOGGER.log(Level.INFO, json.toString());
       staplerRequest.bindJSON(this, json);
 
       try {

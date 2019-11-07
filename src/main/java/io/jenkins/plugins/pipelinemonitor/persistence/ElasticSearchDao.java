@@ -44,6 +44,8 @@ import java.nio.charset.StandardCharsets;
 
 import com.google.common.collect.Range;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Elastic Search Data Access Object.
@@ -138,10 +140,12 @@ public class ElasticSearchDao extends AbstractRemoteServerDao {
   }
 
   HttpPost getHttpPost(String data) {
+    log(Level.INFO, "http post: " + data);
     HttpPost postRequest = new HttpPost(uri);
     String mimeType = this.getMimeType();
     // char encoding is set to UTF_8 since this request posts a JSON string
     StringEntity input = new StringEntity(data, StandardCharsets.UTF_8);
+    log(Level.INFO, "input: " + input.toString());
     mimeType = (mimeType != null) ? mimeType : ContentType.APPLICATION_JSON.toString();
     input.setContentType(mimeType);
     postRequest.setEntity(input);
@@ -205,5 +209,25 @@ public class ElasticSearchDao extends AbstractRemoteServerDao {
   @Override
   public String getDescription() {
     return uri.toString();
+  }
+
+  /**
+   * Prints to stdout or stderr.
+   *
+   * @param level  INFO/WARNING/ERROR
+   * @param format String that formats the log
+   * @param args   arguments for the formated log string
+   */
+  private static void log(Level level, String format, Object... args) {
+    getLogger().log(level, String.format(format, args));
+  }
+
+  /**
+   * Gets the logger for the listener.
+   *
+   * @return logger object
+   */
+  private static Logger getLogger() {
+    return Logger.getLogger(ElasticSearchDao.class.getName());
   }
 }
