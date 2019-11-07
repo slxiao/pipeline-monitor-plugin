@@ -41,7 +41,7 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
   private transient RemoteServer<?> activeServer;
 
   public PipelineMonitorConfiguration() {
-    load();
+    // load();
     if (enabled == null) {
       if (remoteServer == null) {
         enabled = false;
@@ -68,11 +68,6 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
     this.enableGlobally = enableGlobally;
   }
 
-  /**
-   * Returns the current logstash indexer configuration.
-   *
-   * @return configuration instance
-   */
   public RemoteServer<?> getRemoteServer() {
     return remoteServer;
   }
@@ -81,11 +76,6 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
     this.remoteServer = remoteServer;
   }
 
-  /**
-   * Returns the actual instance of the logstash dao.
-   * 
-   * @return dao instance
-   */
   @CheckForNull
   public RemoteServerDao getRemoteInstance() {
     if (activeServer != null) {
@@ -108,9 +98,11 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
   @SuppressWarnings("deprecation")
   @Initializer(after = InitMilestone.JOB_LOADED)
   public void migrateData() {
+    LOGGER.log(Level.INFO, "migrateData......" + dataMigrated);
     if (!dataMigrated) {
       Descriptor descriptor = PipelineMonitorInstallation.getPipelineMonitorDescriptor();
-      if (descriptor.getType() != null) {
+      LOGGER.log(Level.INFO, "descriptor......" + descriptor);
+      if (descriptor != null && descriptor.getType() != null) {
         ServerType type = descriptor.getType();
         switch (type) {
           case ELASTICSEARCH:
@@ -133,12 +125,13 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
             }
             break;
           default:
-            LOGGER.log(Level.INFO, "unknown remote server type: " + type);
+            LOGGER.log(Level.INFO, "descriptor is null or descriptor type is null");
             enabled = false;
             break;
         }
         activeServer = remoteServer;
       }
+      LOGGER.log(Level.INFO, "descriptor is null or descriptor type is null");
       dataMigrated = true;
       save();
     }

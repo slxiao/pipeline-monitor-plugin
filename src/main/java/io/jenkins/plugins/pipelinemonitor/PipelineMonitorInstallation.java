@@ -33,14 +33,14 @@ import io.jenkins.plugins.pipelinemonitor.persistence.RemoteServerDao.ServerType
 
 import org.kohsuke.stapler.DataBoundConstructor;
 
-/**
- * POJO for storing global configurations shared between components.
- *
- * @author Rusty Gerard
- * @since 1.0.0
- */
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class PipelineMonitorInstallation extends ToolInstallation {
-  private static final long serialVersionUID = -5730780734005293851L;
+  private static final Logger LOGGER =
+      Logger.getLogger(PipelineMonitorConfiguration.class.getName());
+
+  private static final long serialVersionUID = -1730780734005293851L;
 
   @DataBoundConstructor
   public PipelineMonitorInstallation(String name, String home,
@@ -49,6 +49,11 @@ public class PipelineMonitorInstallation extends ToolInstallation {
   }
 
   public static Descriptor getPipelineMonitorDescriptor() {
+    Boolean instanceIsNull = Jenkins.getInstance() == null;
+    Boolean descriptorIsNull =
+        Jenkins.getInstance().getDescriptor(PipelineMonitorInstallation.class) == null;
+    LOGGER.log(Level.INFO, "" + instanceIsNull + descriptorIsNull);
+
     return (Descriptor) Jenkins.getInstance().getDescriptor(PipelineMonitorInstallation.class);
   }
 
