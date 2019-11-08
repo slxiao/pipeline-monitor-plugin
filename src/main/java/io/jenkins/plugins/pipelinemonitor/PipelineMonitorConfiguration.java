@@ -44,7 +44,7 @@ public class PipelineMonitorConfiguration extends GlobalConfiguration {
   private transient boolean configuring = false;
 
   public PipelineMonitorConfiguration() {
-    // load();
+    load();
     if (enabled == null) {
       if (remoteServer == null) {
         enabled = false;

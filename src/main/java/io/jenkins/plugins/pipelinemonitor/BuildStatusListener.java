@@ -10,7 +10,6 @@ import hudson.tasks.junit.TestResultAction;
 import io.jenkins.plugins.pipelinemonitor.model.BuildStatus;
 import io.jenkins.plugins.pipelinemonitor.model.CodeCoverage;
 import io.jenkins.plugins.pipelinemonitor.model.TestResults;
-import io.jenkins.plugins.pipelinemonitor.util.RestClientUtil;
 import jenkins.model.Jenkins;
 
 import java.io.PrintStream;
