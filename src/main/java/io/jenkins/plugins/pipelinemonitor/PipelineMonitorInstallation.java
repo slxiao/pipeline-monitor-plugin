@@ -46,6 +46,7 @@ public class PipelineMonitorInstallation extends ToolInstallation {
   public PipelineMonitorInstallation(String name, String home,
       List<? extends ToolProperty<?>> properties) {
     super(name, home, properties);
+    LOGGER.log(Level.INFO, "PipelineMonitorInstallation " + name + home);
   }
 
   public static Descriptor getPipelineMonitorDescriptor() {
@@ -66,9 +67,13 @@ public class PipelineMonitorInstallation extends ToolInstallation {
     private transient String password;
     private transient String key;
 
+    private static final Logger LOGGER =
+        Logger.getLogger(PipelineMonitorConfiguration.class.getName());
+
     public Descriptor() {
       super();
       load();
+      LOGGER.log(Level.INFO, "Descriptor constructor");
     }
 
     @Override
