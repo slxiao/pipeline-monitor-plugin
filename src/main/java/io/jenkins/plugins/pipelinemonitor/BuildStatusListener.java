@@ -45,27 +45,35 @@ public class BuildStatusListener extends RunListener<Run<?, ?>> {
 
     PipelineMonitorWriter pmWrite =
         new PipelineMonitorWriter(run, errorStream, listener, run.getCharset());
-    pmWrite.write();
 
-    /*
-     * final String buildResult; Result result = run.getResult(); if (result == null) { buildResult
-     * = "ONGOING"; } else { buildResult = result.toString(); }
-     * 
-     * BuildStatus build = new BuildStatus();
-     * build.setJenkinsUrl(Jenkins.getInstance().getRootUrl());
-     * build.setJobName(run.getParent().getName()); build.setNumber(run.getNumber());
-     * build.setResult(buildResult); build.setDuration(run.getDuration());
-     * 
-     * RestClientUtil.postToService("http://10.183.42.147:8080", build);
-     * 
-     * TestResultAction testResultAction = run.getAction(TestResultAction.class); TestResults
-     * testResults = TestResults.fromJUnitTestResults(testResultAction);
-     * RestClientUtil.postToService("http://10.183.42.147:8080", testResults);
-     * 
-     * CoberturaBuildAction coberturaAction = run.getAction(CoberturaBuildAction.class);
-     * CodeCoverage codeCoverage = CodeCoverage.fromCobertura(coberturaAction);
-     * RestClientUtil.postToService("http://10.183.42.147:8080", codeCoverage);
-     */
+    pmWrite.write(null);
+
+
+    final String buildResult;
+    Result result = run.getResult();
+    if (result == null) {
+      buildResult = "ONGOING";
+    } else {
+      buildResult = result.toString();
+    }
+
+    BuildStatus build = new BuildStatus();
+    build.setJenkinsUrl(Jenkins.getInstance().getRootUrl());
+    build.setJobName(run.getParent().getName());
+    build.setNumber(run.getNumber());
+    build.setResult(buildResult);
+    build.setDuration(run.getDuration());
+
+    pmWrite.write(build);
+
+    TestResultAction testResultAction = run.getAction(TestResultAction.class);
+    TestResults testResults = TestResults.fromJUnitTestResults(testResultAction);
+    pmWrite.write(testResults);
+
+    CoberturaBuildAction coberturaAction = run.getAction(CoberturaBuildAction.class);
+    CodeCoverage codeCoverage = CodeCoverage.fromCobertura(coberturaAction);
+    pmWrite.write(codeCoverage);
+
   }
 
   /**

@@ -27,6 +27,8 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.time.FastDateFormat;
 
+import io.jenkins.plugins.pipelinemonitor.util.JsonUtil;
+
 /**
  * Abstract data access object for Logstash indexers.
  *
@@ -36,9 +38,12 @@ import org.apache.commons.lang.time.FastDateFormat;
 public abstract class AbstractRemoteServerDao implements RemoteServerDao {
 
   @Override
-  public JSONObject buildPayload(BuildData buildData) {
+  public JSONObject buildPayload(BuildData buildData, Object object) {
     JSONObject payload = new JSONObject();
-    payload.put("data", buildData.toJson());
+    payload.put("build", buildData.toJson());
+    if (object != null) {
+      payload.put("result", JsonUtil.convertToJson(object));
+    }
     payload.put("source", "jenkins");
     payload.put("@timestamp", FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
         .format(Calendar.getInstance().getTime()));

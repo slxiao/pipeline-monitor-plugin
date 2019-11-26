@@ -85,8 +85,8 @@ public class PipelineMonitorWriter {
     return Jenkins.getInstance().getRootUrl();
   }
 
-  public void write() {
-    JSONObject payload = dao.buildPayload(buildData);
+  public void write(Object object) {
+    JSONObject payload = dao.buildPayload(buildData, object);
     try {
       dao.push(payload.toString());
     } catch (IOException e) {

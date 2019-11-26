@@ -54,5 +54,5 @@ public interface RemoteServerDao {
    * @param logLines   The log data to transmit, not null
    * @return The formatted JSON object, never null
    */
-  public JSONObject buildPayload(BuildData buildData);
+  public JSONObject buildPayload(BuildData buildData, Object object);
 }
