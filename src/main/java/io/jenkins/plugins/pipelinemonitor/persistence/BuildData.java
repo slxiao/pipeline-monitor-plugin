@@ -43,12 +43,12 @@ public class BuildData {
   private String url;
 
   // Freestyle project build
-  public BuildData(AbstractBuild<?, ?> build, Date currentTime, TaskListener listener) {
+  public BuildData(AbstractBuild<?, ?> build, Date currentTime) {
     url = build.getUrl();
   }
 
   // Pipeline project build
-  public BuildData(Run<?, ?> build, Date currentTime, TaskListener listener) {
+  public BuildData(Run<?, ?> build, Date currentTime) {
     url = build.getUrl();
   }
 

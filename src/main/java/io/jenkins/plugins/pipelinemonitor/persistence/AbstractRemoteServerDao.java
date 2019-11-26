@@ -42,7 +42,7 @@ public abstract class AbstractRemoteServerDao implements RemoteServerDao {
     JSONObject payload = new JSONObject();
     payload.put("build", buildData.toJson());
     if (object != null) {
-      payload.put("result", JsonUtil.convertToJson(object));
+      payload.put(object.getClass().getName().split(".")[-1], JsonUtil.convertToJson(object));
     }
     payload.put("source", "jenkins");
     payload.put("@timestamp", FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSSZ")

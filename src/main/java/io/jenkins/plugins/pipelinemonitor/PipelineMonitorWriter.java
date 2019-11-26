@@ -49,17 +49,14 @@ public class PipelineMonitorWriter {
 
   private final OutputStream errorStream;
   private final Run<?, ?> build;
-  private final TaskListener listener;
   private final BuildData buildData;
   private final RemoteServerDao dao;
   private boolean connectionBroken;
   private Charset charset;
 
-  public PipelineMonitorWriter(Run<?, ?> run, OutputStream error, TaskListener listener,
-      Charset charset) {
-    this.errorStream = error != null ? error : System.err;
+  public PipelineMonitorWriter(Run<?, ?> run, Charset charset) {
+    this.errorStream = System.err;
     this.build = run;
-    this.listener = listener;
     this.charset = charset;
     this.dao = this.getDaoOrNull();
     if (this.dao == null) {
@@ -75,9 +72,9 @@ public class PipelineMonitorWriter {
 
   BuildData getBuildData() {
     if (build instanceof AbstractBuild) {
-      return new BuildData((AbstractBuild<?, ?>) build, new Date(), listener);
+      return new BuildData((AbstractBuild<?, ?>) build, new Date());
     } else {
-      return new BuildData(build, new Date(), listener);
+      return new BuildData(build, new Date());
     }
   }
 

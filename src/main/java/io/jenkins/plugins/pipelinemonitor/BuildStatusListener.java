@@ -12,8 +12,6 @@ import io.jenkins.plugins.pipelinemonitor.model.CodeCoverage;
 import io.jenkins.plugins.pipelinemonitor.model.TestResults;
 import jenkins.model.Jenkins;
 
-import java.io.PrintStream;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,7 +32,6 @@ public class BuildStatusListener extends RunListener<Run<?, ?>> {
   @Override
   public void onCompleted(final Run<?, ?> run, TaskListener listener) {
 
-    PrintStream errorStream = listener.getLogger();
     PipelineMonitorConfiguration configuration = PipelineMonitorConfiguration.getInstance();
     if (!configuration.isEnabled()) {
       log(Level.WARNING, "pipeline monitor plugin disabled!");
@@ -43,8 +40,7 @@ public class BuildStatusListener extends RunListener<Run<?, ?>> {
 
     log(Level.INFO, "start pipeline monitor writer");
 
-    PipelineMonitorWriter pmWrite =
-        new PipelineMonitorWriter(run, errorStream, listener, run.getCharset());
+    PipelineMonitorWriter pmWrite = new PipelineMonitorWriter(run, run.getCharset());
 
     pmWrite.write(null);
 
