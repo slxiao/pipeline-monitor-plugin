@@ -5,8 +5,8 @@
 	<a href="https://travis-ci.org/slxiao/pipeline-monitor-plugin">
 		<img alt="Build Status" src="http://img.shields.io/travis/slxiao/pipeline-monitor-plugin/master.svg?style=flat-square" />
 	</a>
-    <a href="https://coveralls.io/github/slxiao/pipeline-monitor-plugin?branch=master">
-		<img alt="Coverage" src="https://coveralls.io/repos/github/slxiao/pipeline-monitor-plugin/badge.svg?branch=master" />
+    <a href="(https://opensource.org/licenses/MIT">
+		<img alt="Linsense" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
 	</a>
 </p>
 

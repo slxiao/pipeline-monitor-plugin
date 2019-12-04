@@ -18,8 +18,8 @@ import io.jenkins.plugins.pipelinemonitor.persistence.AbstractRemoteServerDao;
 import net.sf.json.JSONObject;
 
 /**
- * Extension point for logstash indexers. This extension point provides the configuration for the
- * indexer. You also have to implement the actual indexer in a separate class extending
+ * Extension point for pipeline monitor indexers. This extension point provides the configuration
+ * for the indexer. You also have to implement the actual indexer in a separate class extending
  * {@link AbstractRemoteServerDao}.
  *
  * @param <T> The class implementing the push to the indexer
